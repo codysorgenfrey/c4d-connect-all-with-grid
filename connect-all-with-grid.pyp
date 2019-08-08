@@ -94,7 +94,6 @@ class ConnectAllWithGridData(c4d.plugins.ObjectData):
             md = mo.GeGetMoData(obj)
             if md is not None:
                 moMarr = md.GetArray(c4d.MODATA_MATRIX)
-
                 for x in range(len(moMarr)):# put marrs into cloner space
                     moMarr[x] = obj.GetMg() * moMarr[x]
 
