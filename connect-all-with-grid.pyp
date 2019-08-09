@@ -44,7 +44,7 @@ class ConnectAllWithGridData(c4d.plugins.ObjectData):
     PLUGIN_DESC = 'Oconnectallwithgrid'
     PLUGIN_ICON = load_bitmap('res/icons/Connect All With Grid.tiff')
     PLUGIN_DISKLEVEL = 0
-    LAST_FRAME = 0
+    LAST_FRAME = -1
 
     @classmethod
     def Register(cls):
@@ -89,17 +89,21 @@ class ConnectAllWithGridData(c4d.plugins.ObjectData):
 
         inMarrs = []
         for x in range(inExCount):
-            obj = inEx.ObjectFromIndex(doc, x)
+            obj = inEx.ObjectFromIndex(op.GetDocument(), x)
 
             md = mo.GeGetMoData(obj)
             if md is not None:
-                moMarr = md.GetArray(c4d.MODATA_MATRIX)
-                for x in range(len(moMarr)):# put marrs into cloner space
-                    moMarr[x] = obj.GetMg() * moMarr[x]
+                mdCount = md.GetCount()
+                if mdCount is not 0:
+                    moMarr = md.GetArray(c4d.MODATA_MATRIX)
+                    for x in range(mdCount):# put marrs into cloner space
+                        moMarr[x] = obj.GetMg() * moMarr[x]
 
-                inMarrs.extend(moMarr)
+                    inMarrs.extend(moMarr)
             else:
                 inMarrs.append(obj.GetMg())
+
+        if len(inMarrs) is 0: return None
 
         outPoints = []
         outPoints.append(inMarrs[0].off) # insert firset point
