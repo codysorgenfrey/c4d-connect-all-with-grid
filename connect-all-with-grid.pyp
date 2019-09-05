@@ -98,7 +98,7 @@ class ConnectAllWithGridData(c4d.plugins.ObjectData):
                     moMarr = md.GetArray(c4d.MODATA_MATRIX)
                     moFlags = md.GetArray(c4d.MODATA_FLAGS)
                     for x in range(mdCount):# put marrs into cloner space
-                        if moFlags[x] & c4d.MOGENFLAG_CLONE_ON:
+                        if moFlags[x] & c4d.MOGENFLAG_CLONE_ON and not moFlags[x] & c4d.MOGENFLAG_DISABLE:
                             moMarr[x] = obj.GetMg() * moMarr[x]
                             inMarrs.append(moMarr[x])
             else:
