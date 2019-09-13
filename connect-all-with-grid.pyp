@@ -91,18 +91,19 @@ class ConnectAllWithGridData(c4d.plugins.ObjectData):
         for x in range(inExCount):
             obj = inEx.ObjectFromIndex(op.GetDocument(), x)
 
-            md = mo.GeGetMoData(obj)
-            if md is not None:
-                mdCount = md.GetCount()
-                if mdCount is not 0:
-                    moMarr = md.GetArray(c4d.MODATA_MATRIX)
-                    moFlags = md.GetArray(c4d.MODATA_FLAGS)
-                    for x in range(mdCount):# put marrs into cloner space
-                        if moFlags[x] & c4d.MOGENFLAG_CLONE_ON and not moFlags[x] & c4d.MOGENFLAG_DISABLE:
-                            moMarr[x] = obj.GetMg() * moMarr[x]
-                            inMarrs.append(moMarr[x])
-            else:
-                inMarrs.append(obj.GetMg())
+            if obj is not None:
+                md = mo.GeGetMoData(obj)
+                if md is not None:
+                    mdCount = md.GetCount()
+                    if mdCount is not 0:
+                        moMarr = md.GetArray(c4d.MODATA_MATRIX)
+                        moFlags = md.GetArray(c4d.MODATA_FLAGS)
+                        for x in range(mdCount):# put marrs into cloner space
+                            if moFlags[x] & c4d.MOGENFLAG_CLONE_ON and not moFlags[x] & c4d.MOGENFLAG_DISABLE:
+                                moMarr[x] = obj.GetMg() * moMarr[x]
+                                inMarrs.append(moMarr[x])
+                else:
+                    inMarrs.append(obj.GetMg())
 
         if len(inMarrs) is 0: return None
 
